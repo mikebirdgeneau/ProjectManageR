@@ -9,10 +9,10 @@ library(shiny)
 #library(shinyBS)
 
 shinyUI(
-  navbarPage(title = "Project ManageR",
+  navbarPage(title = appTitle,
              theme = "css/lumen.min.css", 
              fluid = TRUE, collapsible = TRUE,
-             tabPanel("Project ManageR",
+             tabPanel("Overview",
                       sidebarPanel(
                         h4("Filters"),
                         dateRangeInput("wpGanttDateRange","Date Filter",start=Sys.Date()-31,end=Sys.Date()+365,weekstart = 0,separator = "to")

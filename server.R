@@ -64,7 +64,7 @@ shinyServer(function(input, output, session) {
   output$wpGanttChart <- renderUI({
     result <- generateWorkplanGantt()
     isolate({
-    list(plotOutput("workplanGantt", height = min(c(max(c(250,result$rows*50)),800))))
+    list(plotOutput("workplanGantt", height = min(c(max(c(250,result$rows*20)),800))))
     })
   })
   
@@ -125,7 +125,7 @@ shinyServer(function(input, output, session) {
   output$projGanttChart <- renderUI({
     result <- generateProjectGantt(this.project = input$selectedProject)
     isolate({
-      list(plotOutput("projectGantt", height = min(c(max(c(250,result$rows*50)),800))))
+      list(plotOutput("projectGantt", height = min(c(max(c(250,result$rows*20)),800))))
     })
   })
   

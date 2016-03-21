@@ -8,6 +8,9 @@ library(ggplot2)
 
 source("db.R")
 
+# Branding
+appTitle = "Project ManageR"
+
 # Priorties
 priorities <- list("Business Critical" = 1,"Important" = 2,"Wait-Listed" = 3,"On-Hold" = 4)
 
