@@ -3,6 +3,7 @@ library(shiny)
 library(shinyBS)
 library(data.table)
 library(ggplot2)
+library(rhandsontable)
 
 # Global Variables & Initialization ---------------------------------------
 

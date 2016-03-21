@@ -12,7 +12,7 @@ shinyUI(
   navbarPage(title = appTitle,
              theme = "css/lumen.min.css", 
              fluid = TRUE, collapsible = TRUE,
-             tabPanel("Overview",
+             tabPanel("Overview", icon = icon("star"),
                       sidebarPanel(
                         h4("Filters"),
                         dateRangeInput("wpGanttDateRange","Date Filter",start=Sys.Date()-31,end=Sys.Date()+365,weekstart = 0,separator = "to")
@@ -21,7 +21,7 @@ shinyUI(
                         uiOutput("wpGanttChart")
                         ,width=9)
              ),
-             tabPanel("Project Schedules",
+             tabPanel("Project Schedules", icon = icon("calendar"),
                       fluidRow(
                         column(6,
                                h4("Project Schedules")
@@ -29,15 +29,15 @@ shinyUI(
                         column(6,
                                # Add Project
                                bsModal("addProjectModal", "Add New Project", "addProject", size = "large",list(
-                                fluidRow(column(12,
-                                                textInput("addProject_project",label = "Project Name:",placeholder = "Project Name"),
-                                                textInput("addProject_description",label = "Description:",placeholder = "Project Description"),
-                                                textInput("addProject_category",label = "Project Category:",placeholder = "Project Category"),
-                                                textInput("addProject_subcategory",label = "Project Subcategory:",placeholder = "Project Subcategory"),
-                                                selectizeInput(inputId = "addProject_goal",label="Supports Team Goal:",choices = listTeamGoals()$title,width = "100%"),
-                                                selectInput("addProject_priority",label = "Priority:",choices = priorities),
-                                                bsButton("goAddProject",type = "action", label = "Add Project",icon = icon("save"))
-                                ))
+                                 fluidRow(column(12,
+                                                 textInput("addProject_project",label = "Project Name:",placeholder = "Project Name"),
+                                                 textInput("addProject_description",label = "Description:",placeholder = "Project Description"),
+                                                 textInput("addProject_category",label = "Project Category:",placeholder = "Project Category"),
+                                                 textInput("addProject_subcategory",label = "Project Subcategory:",placeholder = "Project Subcategory"),
+                                                 selectizeInput(inputId = "addProject_goal",label="Supports Team Goal:",choices = listTeamGoals()$title,width = "100%"),
+                                                 selectInput("addProject_priority",label = "Priority:",choices = priorities),
+                                                 bsButton("goAddProject",type = "action", label = "Add Project",icon = icon("save"))
+                                 ))
                                )),
                                # Add Task
                                bsModal("addTaskModal", "Add Task to Project", "addTaskToProject", size = "large",list(
@@ -65,7 +65,7 @@ shinyUI(
                                         actionLink("editTask",label = "Edit Task",icon = icon("pencil"))
                                  )
                                )
-                                        
+                               
                         )),
                       sidebarPanel(
                         h4("Filters"),
@@ -76,16 +76,19 @@ shinyUI(
                         uiOutput("projGanttChart")
                         ,width=9)
              ),
-             tabPanel("Tasks",
+             tabPanel("Tasks", icon = icon("tasks"),
                       sidebarPanel(
                         h4("Filters")
-                      ,width=3),
+                        ,width=3),
                       mainPanel(
                         p("Task List")
                         ,width = 9)
              ),
+             tabPanel("Editor", icon=icon("pencil"),
+                      p("Editor here")
+             ),
              #tabPanel("Goals",
-            #          p("Team Goals ... tasks to link to these!")),
+             #          p("Team Goals ... tasks to link to these!")),
              windowTitle = "Project ManageR"
   )
 )
