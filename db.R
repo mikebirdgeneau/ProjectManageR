@@ -4,7 +4,7 @@
 library(RSQLite)
 
 connectDB <- function(){
-  con <- dbConnect(RSQLite::SQLite(),"workPlan.sqlite") 
+  con <- dbConnect(RSQLite::SQLite(shared.cache=TRUE),"db/workPlan.sqlite")
   return(con)
 }
 
