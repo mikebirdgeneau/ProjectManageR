@@ -62,6 +62,8 @@ shinyServer(function(input, output, session) {
     input$goAddTask
     input$goEditTask
     input$confirmDeleteTask
+    projects$data
+    tasks$data
 
     result <- generateWorkplanGantt()
     result$plot
@@ -71,6 +73,8 @@ shinyServer(function(input, output, session) {
     input$goAddTask
     input$goEditTask
     input$confirmDeleteTask
+    projects$data
+    tasks$data
 
     result <- generateWorkplanGantt()
     isolate({
@@ -130,6 +134,9 @@ shinyServer(function(input, output, session) {
     input$goEditTask
     input$confirmDeleteTask
     input$projectDateRange
+    projects$data
+    tasks$data
+    
     listProjects()
     listTasks()
     isolate({
@@ -139,6 +146,13 @@ shinyServer(function(input, output, session) {
   })
   
   output$projGanttChart <- renderUI({
+    input$goAddTask
+    input$goEditTask
+    input$confirmDeleteTask
+    input$projectDateRange
+    projects$data
+    tasks$data
+    
     result <- generateProjectGantt(this.project = input$selectedProject)
     isolate({
       list(plotOutput("projectGantt", height = min(c(max(c(250,result$rows*20)),800))))
@@ -190,6 +204,9 @@ shinyServer(function(input, output, session) {
     input$goEditTask
     input$confirmDeleteTask
     input$projectDateRange
+    projects$data
+    tasks$data
+    
     selectizeInput(inputId = "selectedTask",label="Select Task",choices = listTasks()[project_id==listProjects()[project==input$selectedProject,]$project_id,]$title)
   })
   
@@ -243,6 +260,8 @@ shinyServer(function(input, output, session) {
   
   output$projectFilter <- renderUI({
     input$goAddProject
+    projects$data
+    tasks$data
     listProjects()
     isolate({
       selectizeInput("selectedProject","Selected Project:",choices = listProjects()$project)
@@ -251,6 +270,8 @@ shinyServer(function(input, output, session) {
   
   output$projectFilterTasks <- renderUI({
     input$goAddProject
+    projects$data
+    tasks$data
     listProjects()
     isolate({
       selectizeInput("selectedProjectTasks","Selected Project:",choices = listProjects()$project)
@@ -259,6 +280,9 @@ shinyServer(function(input, output, session) {
   
   output$projectDateRange <- renderUI({
     input$selectedProject
+    projects$data
+    tasks$data
+    
     isolate({
       dt_tasks <- listTasks()[project_id == listProjects()[project==input$selectedProject,]$project_id,]
       dt_tasks[,start:=as.Date(start),]
@@ -277,6 +301,8 @@ shinyServer(function(input, output, session) {
     input$goAddTask
     input$goEditTask
     input$confirmDeleteTask
+    projects$data
+    tasks$data
     dt_tasks <- listTasks()
 
     list(
@@ -284,5 +310,63 @@ shinyServer(function(input, output, session) {
       selectizeInput("assigneeTaskFilter",label = "Assignee:",selected = unique(dt_tasks$assigned),choices = unique(dt_tasks$assigned),multiple=TRUE)
     )
   })
+  
+  projects <- reactiveValues(data = listProjects())
+  tasks <- reactiveValues(data = listTasks())
+  goals <- reactiveValues(data = listTeamGoals())
+  
+  observe({
+    input$hot_projects
+    isolate(
+      if(!is.null(input$hot_projects)){
+        projects$data <- data.table(hot_to_r(input$hot_projects))
+        saveProjectTable(projects$data)
+      }
+    )
+  })
+  
+  output$hot_projects <- renderRHandsontable({
+    projects$data
+    isolate({
+      rhandsontable(data.table(copy(projects$data)),readOnly = FALSE)
+    })
+  })
+  
+  observe({
+    input$hot_tasks
+    isolate(
+      if(!is.null(input$hot_tasks)){
+        tasks$data <- data.table(hot_to_r(input$hot_tasks))
+        saveTaskTable(tasks$data)
+      }
+    )
+  })
+  
+  output$hot_tasks <- renderRHandsontable({
+    tasks$data
+    isolate({
+      rhandsontable(data.table(copy(tasks$data)),readOnly = FALSE)
+    })
+  })
+  
+  observe({
+    input$hot_goals
+    isolate(
+      if(!is.null(input$hot_goals)){
+        goals$data <- data.table(hot_to_r(input$hot_goals))
+        saveGoalTable(goals$data)
+      }
+    )
+  })
+  
+  output$hot_goals <- renderRHandsontable({
+    goals$data
+    isolate({
+      rhandsontable(data.table(copy(goals$data)),readOnly = FALSE)
+    })
+  })
+  
+  outputOptions(output,"projectDateRange", priority = 10)
+  outputOptions(output,"projGanttChart", priority = 5)
   
 })

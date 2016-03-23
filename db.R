@@ -134,3 +134,21 @@ listTasks <- function(){
   return(result)
 }
 
+saveProjectTable <- function(projectData){
+  con <- connectDB()
+  dbWriteTable(con,"projects", value = projectData,overwrite=TRUE,append=FALSE)
+  disconnectDB(con)
+}
+
+saveTaskTable <- function(taskData){
+  con <- connectDB()
+  dbWriteTable(con,"tasks",value = taskData,overwrite=TRUE,append=FALSE)
+  disconnectDB(con)
+}
+
+saveGoalsTable <- function(goalData){
+  con <- connectDB()
+  dbWriteTable(con,"goals",value = goalData,overwrite=TRUE,append=FALSE)
+  disconnectDB(con)
+}
+

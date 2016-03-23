@@ -100,10 +100,25 @@ shinyUI(
                       mainPanel(
                         p("Task List")
                         ,width = 9)
+                      
+                      
              ),
-             #tabPanel("Editor", icon=icon("pencil"),
-            #          p("Editor here (rhandsontable)")
-             #),
+             tabPanel("Editor", icon=icon("pencil"),
+                      tabsetPanel(id="editor_tabs",
+                                  tabPanel(title="Projects",
+                                           h4("Project Editor"),
+                                           rHandsontableOutput("hot_projects")
+                                  ),
+                                  tabPanel(title="Tasks",
+                                           h4("Task Editor"),
+                                           rHandsontableOutput("hot_tasks")
+                                  ),
+                                  tabPanel(title="Team Goals",
+                                           h4("Team Goal Editor"),
+                                           rHandsontableOutput("hot_goals")
+                                  )
+                      )
+             ),
              #tabPanel("Goals",
              #          p("Team Goals ... tasks to link to these!")),
              windowTitle = "Project ManageR"
