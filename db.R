@@ -32,10 +32,10 @@ addProject <- function(project,description,category,subcategory,goal_id,priority
   disconnectDB(con)
 }
 
-addTask <- function(title,description,assigned,start,finish,progress=0.00,url=NULL,priority,project_id){
+addTask <- function(title,description,assigned,start,finish,progress=0.00,url=NULL,priority,comment,project_id){
   con <- connectDB()
   dbGetQuery(con,"CREATE TABLE IF NOT EXISTS tasks(task_id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, description TEXT, assigned TEXT, start TEXT, finish TEXT, progress REAL, url TEXT, priority INTEGER,  project_id INTEGER, comment TEXT);")
-  dbGetQuery(con,paste0("INSERT INTO tasks(`task_id`,`title`,`description`,`assigned`,`start`,`finish`,`progress`,`url`,`priority`,`project_id`) VALUES (NULL,'",title,"','",description,"','",assigned,"','",start,"','",finish,"','",progress,"','",url,"','",priority,"','",project_id,"')"))
+  dbGetQuery(con,paste0("INSERT INTO tasks(`task_id`,`title`,`description`,`assigned`,`start`,`finish`,`progress`,`url`,`priority`,`project_id`,`comment`) VALUES (NULL,'",title,"','",description,"','",assigned,"','",start,"','",finish,"','",progress,"','",url,"','",priority,"','",project_id,"','",comment,"')"))
   disconnectDB(con)
 }
 
@@ -67,7 +67,7 @@ updateProject <- function(id,project,description,category,subcategory,goal_id,pr
   rm(item)
 }
 
-updateTask <- function(id,title,description,assigned,start,finish,progress=0.00,url=NULL,priority,project_id){
+updateTask <- function(id,title,description,assigned,start,finish,progress=0.00,url=NULL,priority,project_id,comment){
   con <- connectDB()
   item <- dbGetQuery(con,paste0("SELECT * from tasks WHERE task_id = ",id))
   
@@ -80,8 +80,10 @@ updateTask <- function(id,title,description,assigned,start,finish,progress=0.00,
   if(!missing(url)){item$url <- url}
   if(!missing(priority)){item$priority <- priority}
   if(!missing(project_id)){item$project_id <- project_id}
+  if(!missing(comment)){item$comment <- comment}
   
-  dbGetQuery(con,paste0("UPDATE tasks SET `title`= '",item$title,"',`description`= '",item$description,"',`assigned`= '",item$assigned,"',`start`= '",item$start,"',`finish`= '",item$finish,"',`progress`= ",item$progress,",`url`= '",item$url,"',`priority`= ",item$priority,",`project_id`= ",item$project_id," WHERE task_id = ",id))
+  
+  dbGetQuery(con,paste0("UPDATE tasks SET `title`= '",item$title,"',`description`= '",item$description,"',`assigned`= '",item$assigned,"',`start`= '",item$start,"',`finish`= '",item$finish,"',`progress`= ",item$progress,",`url`= '",item$url,"',`priority`= ",item$priority,",`project_id`= ",item$project_id,",`comment`= ",item$comment," WHERE task_id = ",id))
   
   disconnectDB(con)
   rm(item)

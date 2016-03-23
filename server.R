@@ -179,7 +179,8 @@ shinyServer(function(input, output, session) {
             progress = 0.0,
             url = input$addTask_url,
             project_id = listProjects()[project==input$selectedProject,]$project_id,
-            priority = input$addTask_priority)
+            priority = input$addTask_priority,
+            comment = input$addTask_comment)
     toggleModal(session = session,modalId = "addTaskModal",toggle = "close")
     message("Done Adding Task")
   })
@@ -194,7 +195,8 @@ shinyServer(function(input, output, session) {
             progress = 0.0,
             url = input$editTask_url,
             project_id = listProjects()[project==input$selectedProject,]$project_id,
-            priority = input$editTask_priority)
+            priority = input$editTask_priority,
+            comment = input$editTask_comment)
     toggleModal(session = session,modalId = "editTaskModal",toggle = "close")
     message("Done Editing Task")
   })
@@ -219,7 +221,9 @@ shinyServer(function(input, output, session) {
     textInput("addTask_assigned",label = "Assigned To:",placeholder = "Responsible Person"),
     dateRangeInput("addTask_range",start = Sys.Date(), end = Sys.Date()+31,label = "Start Date:"),
     textInput(inputId = "addTask_url",label="URL (if applicable):",placeholder = "Github, Jive, etc.",width = "100%"),
-    selectInput("addTask_priority",label = "Priority:",choices = priorities)
+    selectInput("addTask_priority",label = "Priority:",choices = priorities),
+    textInput(inputId = "addTask_comment",label="Comment:",value = thisTask$comment,width = "100%")
+    
     )
   })
   output$editTaskModalUI <- renderUI({
@@ -234,7 +238,8 @@ shinyServer(function(input, output, session) {
       textInput("editTask_assigned",label = "Assigned To:", thisTask$assigned),
       dateRangeInput("editTask_range",start = thisTask$start, end = thisTask$finish,label = "Start Date:"),
       textInput(inputId = "editTask_url",label="URL (if applicable):",value = thisTask$url,width = "100%"),
-      selectInput("editTask_priority",label = "Priority:",choices = priorities,selected = thisTask$priority)
+      selectInput("editTask_priority",label = "Priority:",choices = priorities,selected = thisTask$priority),
+      textInput(inputId = "editTask_comment",label="Comment:",value = thisTask$comment,width = "100%")
     )
   })
   
@@ -379,7 +384,7 @@ shinyServer(function(input, output, session) {
     tasks$data
     
     # Process Data from DB:
-    tasks <- listTasks()
+    tasks <- tasksWithStatus()
     projects <- subset(listProjects(),select=c("project_id","project"))
     tasks <- merge(tasks, projects,by=c("project_id"))
     tasks$project_id <- NULL
@@ -392,7 +397,7 @@ shinyServer(function(input, output, session) {
       tasks <- tasks[project %in% input$selectedProjectTasks,]
     }
     
-    subset(tasks,select=c("project","title","description","start","finish","assigned","priority","progress"))
+    subset(tasks,select=c("project","title","description","start","finish","assigned","priority","Status","comment"))
     },
     
     options = list(
