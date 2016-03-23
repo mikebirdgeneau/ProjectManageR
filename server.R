@@ -37,7 +37,7 @@ shinyServer(function(input, output, session) {
     plot.data[,desc:=factor(project,levels=unique(plot.data$project)),]
     plot.data[,max.date:=finish,by=c("id")]
     
-    plot.data[,plot_priority := factor(priority,levels = c(1,2,3,4,5),exclude = NULL,labels = c("Business Critical","Important","Wait-List","On-Hold","NA"))]
+    plot.data[,plot_priority := factor(priority,levels = c(1,2,3,4),exclude = NULL,labels = c("Business Critical","Important","Wait-List","On-Hold"))]
     
     dt.workdays<-data.table(dates=seq(as.Date("2015-12-01"),as.Date("2018-01-01"),by=1))
     dt.workdays[,dow:=wday(dates),]
@@ -59,12 +59,19 @@ shinyServer(function(input, output, session) {
   }
   
   output$workplanGantt <- renderPlot({
-    listProjects()
+    input$goAddTask
+    input$goEditTask
+    input$confirmDeleteTask
+
     result <- generateWorkplanGantt()
     result$plot
   })
   
   output$wpGanttChart <- renderUI({
+    input$goAddTask
+    input$goEditTask
+    input$confirmDeleteTask
+
     result <- generateWorkplanGantt()
     isolate({
     list(plotOutput("workplanGantt", height = min(c(max(c(250,result$rows*20)),800))))
