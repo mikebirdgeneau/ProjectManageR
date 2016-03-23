@@ -54,6 +54,20 @@ shinyUI(
                                                  bsButton("goEditTask",type = "action", label = "Apply Changes",icon = icon("save"))
                                  ))
                                )),
+                               # Delete Task
+                               bsModal("deleteTaskModal", "Delete Task", "deleteTask", size = "large",list(
+                                 fluidRow(column(12,
+                                                 uiOutput("deleteTaskModelSelect"),
+                                                 bsButton("goDeleteTask",type = "action", label = "Delete Selected Task",icon = icon("trash"))
+                                 ))
+                               )),
+                               # Confirm Delete Task
+                               bsModal("confirmDeleteTaskModal","Confirm Task Deletion", "confirmDeleteTaskModalTrigger", size = "small", list(
+                                 fluidRow(column(12,
+                                                 bsButton("confirmDeleteTask", type = "action", label = "Confirm Deletion", icon=icon("trash")),
+                                                 bsButton("cancelDeleteTask", type = "action", label = "Cancel", icon = icon("undo"))
+                                                 ))
+                               )),
                                fluidRow(
                                  column(3,
                                         actionLink("addProject",label = "Add Project",icon = icon("plus"))
@@ -63,7 +77,9 @@ shinyUI(
                                  ),
                                  column(3,
                                         actionLink("editTask",label = "Edit Task",icon = icon("pencil"))
-                                 )
+                                 ),
+                                 column(3,
+                                        actionLink("deleteTask", label = "Delete Task", icon("trash")))
                                )
                                
                         )),
@@ -85,7 +101,7 @@ shinyUI(
                         ,width = 9)
              ),
              tabPanel("Editor", icon=icon("pencil"),
-                      p("Editor here")
+                      p("Editor here (rhandsontable)")
              ),
              #tabPanel("Goals",
              #          p("Team Goals ... tasks to link to these!")),
