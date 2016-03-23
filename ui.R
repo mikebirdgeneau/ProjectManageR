@@ -98,7 +98,11 @@ shinyUI(
                         uiOutput("taskFilters")
                         ,width=3),
                       mainPanel(
-                        p("Task List")
+                        fluidRow(
+                          column(12,
+                                 dataTableOutput("taskViewer")
+                          )
+                        )
                         ,width = 9)
                       
                       

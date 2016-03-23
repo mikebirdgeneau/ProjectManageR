@@ -366,6 +366,41 @@ shinyServer(function(input, output, session) {
     })
   })
   
+  
+  # Tasks View, by user:
+  output$taskViewer <- renderDataTable({
+    # React to these variables:
+    input$selectedProjectTasks
+    input$assigneeTaskFilter
+    input$goAddTask
+    input$goEditTask
+    input$confirmDeleteTask
+    projects$data
+    tasks$data
+    
+    # Process Data from DB:
+    tasks <- listTasks()
+    projects <- subset(listProjects(),select=c("project_id","project"))
+    tasks <- merge(tasks, projects,by=c("project_id"))
+    tasks$project_id <- NULL
+    
+    # Apply Filters:
+    if(length(input$assigneeTaskFilter)>0){
+    tasks <- tasks[assigned %in% input$assigneeTaskFilter,]
+    }
+    if(length(input$selectedProjectTasks)>0){
+      tasks <- tasks[project %in% input$selectedProjectTasks,]
+    }
+    
+    subset(tasks,select=c("project","title","description","start","finish","assigned","priority","progress"))
+    },
+    
+    options = list(
+      pageLength=5)
+    
+  )
+  
+  
   outputOptions(output,"projectDateRange", priority = 10)
   outputOptions(output,"projGanttChart", priority = 5)
   
