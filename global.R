@@ -10,7 +10,7 @@ library(rhandsontable)
 source("db.R")
 
 # Branding
-appTitle = "Resource Planning Team"
+appTitle = "Project Manager"
 
 categoryName <- "Division"
 subCategoryName <- "Asset"
