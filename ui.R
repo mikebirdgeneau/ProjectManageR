@@ -64,7 +64,7 @@ shinyUI(
                                # Confirm Delete Task
                                bsModal("confirmDeleteTaskModal","Confirm Task Deletion", "confirmDeleteTaskModalTrigger", size = "small", list(
                                  fluidRow(column(12,
-                                                 bsButton("confirmDeleteTask", type = "action", label = "Confirm Deletion", icon=icon("trash")),
+                                                 bsButton("confirmDeleteTask", type = "action", label = "Confirm Deletion", icon=icon("trash"), style = "danger"),
                                                  bsButton("cancelDeleteTask", type = "action", label = "Cancel", icon = icon("undo"))
                                                  ))
                                )),
@@ -100,9 +100,9 @@ shinyUI(
                         p("Task List")
                         ,width = 9)
              ),
-             tabPanel("Editor", icon=icon("pencil"),
-                      p("Editor here (rhandsontable)")
-             ),
+             #tabPanel("Editor", icon=icon("pencil"),
+            #          p("Editor here (rhandsontable)")
+             #),
              #tabPanel("Goals",
              #          p("Team Goals ... tasks to link to these!")),
              windowTitle = "Project ManageR"
