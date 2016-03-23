@@ -122,6 +122,7 @@ shinyServer(function(input, output, session) {
     input$goAddTask
     input$goEditTask
     input$confirmDeleteTask
+    input$projectDateRange
     listProjects()
     listTasks()
     isolate({
