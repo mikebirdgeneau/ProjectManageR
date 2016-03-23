@@ -94,7 +94,8 @@ shinyUI(
              ),
              tabPanel("Tasks", icon = icon("tasks"),
                       sidebarPanel(
-                        h4("Filters")
+                        h4("Filters"),
+                        uiOutput("taskFilters")
                         ,width=3),
                       mainPanel(
                         p("Task List")

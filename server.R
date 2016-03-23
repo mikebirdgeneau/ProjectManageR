@@ -186,6 +186,10 @@ shinyServer(function(input, output, session) {
   })
   
   output$editTaskModelSelect <- renderUI({
+    input$goAddTask
+    input$goEditTask
+    input$confirmDeleteTask
+    input$projectDateRange
     selectizeInput(inputId = "selectedTask",label="Select Task",choices = listTasks()[project_id==listProjects()[project==input$selectedProject,]$project_id,]$title)
   })
   
@@ -245,6 +249,14 @@ shinyServer(function(input, output, session) {
     })
   })
   
+  output$projectFilterTasks <- renderUI({
+    input$goAddProject
+    listProjects()
+    isolate({
+      selectizeInput("selectedProjectTasks","Selected Project:",choices = listProjects()$project)
+    })
+  })
+  
   output$projectDateRange <- renderUI({
     input$selectedProject
     isolate({
@@ -258,6 +270,19 @@ shinyServer(function(input, output, session) {
       )
       
     })
+  })
+  
+  output$taskFilters <- renderUI({
+    input$goAddProject
+    input$goAddTask
+    input$goEditTask
+    input$confirmDeleteTask
+    dt_tasks <- listTasks()
+
+    list(
+      selectizeInput("selectedProjectTasks","Selected Project:",choices = listProjects()$project,multiple=TRUE),
+      selectizeInput("assigneeTaskFilter",label = "Assignee:",selected = unique(dt_tasks$assigned),choices = unique(dt_tasks$assigned),multiple=TRUE)
+    )
   })
   
 })
