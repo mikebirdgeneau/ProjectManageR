@@ -34,7 +34,7 @@ addProject <- function(project,description,category,subcategory,goal_id,priority
 
 addTask <- function(title,description,assigned,start,finish,progress=0.00,url=NULL,priority,project_id){
   con <- connectDB()
-  dbGetQuery(con,"CREATE TABLE IF NOT EXISTS tasks(task_id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, description TEXT, assigned TEXT, start TEXT, finish TEXT, progress REAL, url TEXT, priority INTEGER,  project_id INTEGER);")
+  dbGetQuery(con,"CREATE TABLE IF NOT EXISTS tasks(task_id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, description TEXT, assigned TEXT, start TEXT, finish TEXT, progress REAL, url TEXT, priority INTEGER,  project_id INTEGER, comment TEXT);")
   dbGetQuery(con,paste0("INSERT INTO tasks(`task_id`,`title`,`description`,`assigned`,`start`,`finish`,`progress`,`url`,`priority`,`project_id`) VALUES (NULL,'",title,"','",description,"','",assigned,"','",start,"','",finish,"','",progress,"','",url,"','",priority,"','",project_id,"')"))
   disconnectDB(con)
 }
